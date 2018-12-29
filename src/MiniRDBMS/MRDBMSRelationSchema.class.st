@@ -29,6 +29,11 @@ MRDBMSRelationSchema >> addAttributeNamed: aString withDomain: aMRDBMSDomain [
 ]
 
 { #category : #accessing }
+MRDBMSRelationSchema >> attributeNameAtIndex: anIndex [
+	^ self attributeNames at: anIndex
+]
+
+{ #category : #accessing }
 MRDBMSRelationSchema >> attributeNames [
 	^ self attributesToDomains keys
 ]

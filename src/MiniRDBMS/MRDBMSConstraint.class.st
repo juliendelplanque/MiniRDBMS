@@ -2,10 +2,21 @@ Class {
 	#name : #MRDBMSConstraint,
 	#superclass : #Object,
 	#instVars : [
-		'relation'
+		'relation',
+		'attributeNames'
 	],
 	#category : #'MiniRDBMS-Core'
 }
+
+{ #category : #accessing }
+MRDBMSConstraint >> attributeNames [
+	^ attributeNames
+]
+
+{ #category : #accessing }
+MRDBMSConstraint >> attributeNames: anObject [
+	attributeNames := anObject
+]
 
 { #category : #testing }
 MRDBMSConstraint >> canBeAddedTo: aMRDBMSRelation [

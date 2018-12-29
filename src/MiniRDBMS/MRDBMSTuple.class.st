@@ -61,3 +61,9 @@ MRDBMSTuple >> printOn: aStream [
 		d printOn: aStream ] separatedBy: [ aStream nextPutAll: ', ' ].
 	aStream nextPut: $)
 ]
+
+{ #category : #transforming }
+MRDBMSTuple >> projectOn: attributeNames withSchema: aMRDBMSRelationSchema [
+	^ self class data: (self data withIndexSelect: [ :element :index |
+									attributeNames includes: (aMRDBMSRelationSchema attributeNameAtIndex: index) ])
+]

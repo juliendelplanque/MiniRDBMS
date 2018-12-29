@@ -7,7 +7,8 @@ Class {
 		'name',
 		'relationSchema',
 		'tuples',
-		'constraints'
+		'pkConstraint',
+		'fkConstraints'
 	],
 	#category : #'MiniRDBMS-Core'
 }
@@ -41,16 +42,6 @@ MRDBMSRelation >> cartesianProduct: aMRDBMSRelation [
 		yourself
 ]
 
-{ #category : #accessing }
-MRDBMSRelation >> constraints [
-	^ constraints
-]
-
-{ #category : #accessing }
-MRDBMSRelation >> constraints: anObject [
-	constraints := anObject
-]
-
 { #category : #'relational algebra' }
 MRDBMSRelation >> difference: aMRDBMSRelation [
 	self relationSchema = aMRDBMSRelation relationSchema
@@ -60,6 +51,21 @@ MRDBMSRelation >> difference: aMRDBMSRelation [
 		relationSchema: self relationSchema copy;
 		tuples: (self tuples difference: aMRDBMSRelation tuples);
 		yourself
+]
+
+{ #category : #accessing }
+MRDBMSRelation >> fkConstraints [
+	^ fkConstraints
+]
+
+{ #category : #accessing }
+MRDBMSRelation >> fkConstraints: anObject [
+	fkConstraints := anObject
+]
+
+{ #category : #testing }
+MRDBMSRelation >> hasPrimaryKey [
+	^ self pkConstraint isNotNil
 ]
 
 { #category : #initialization }
@@ -87,6 +93,20 @@ MRDBMSRelation >> name [
 { #category : #private }
 MRDBMSRelation >> name: anObject [
 	name := anObject
+]
+
+{ #category : #accessing }
+MRDBMSRelation >> pkConstraint [
+	^ pkConstraint
+]
+
+{ #category : #accessing }
+MRDBMSRelation >> pkConstraint: aMRDBMSPrimaryKeyConstraint [
+	(aMRDBMSPrimaryKeyConstraint canBeAddedTo: self)
+		ifFalse: [ self error: 'Constraint can not be added to the relation because some tuples do not satsify the constraint' ].
+	pkConstraint := aMRDBMSPrimaryKeyConstraint.
+	aMRDBMSPrimaryKeyConstraint
+		relation: self
 ]
 
 { #category : #'relational algebra' }
