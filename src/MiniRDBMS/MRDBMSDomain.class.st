@@ -33,11 +33,6 @@ MRDBMSDomain class >> named: aString validationBlock: aBlock [
 ]
 
 { #category : #'built-in domains' }
-MRDBMSDomain class >> real [
-	^ realDomain ifNil: [ realDomain := self named: 'REAL' validationBlock: #isFloat ]
-]
-
-{ #category : #'built-in domains' }
 MRDBMSDomain class >> varchar [
 	^ varcharDomain ifNil: [ varcharDomain := self named: 'VARCHAR' validationBlock: #isString ]
 ]

@@ -21,7 +21,7 @@ MRDBMSRelationSchemaTest >> setUp [
 MRDBMSRelationSchemaTest >> testAddAttributeNamedWithDomain [
 	self assert: (relationSchema attributesToDomains size) equals: 3.
 	relationSchema
-		addAttributeNamed: 'poids' withDomain: MRDBMSDomain real.
+		addAttributeNamed: 'poids' withDomain: MRDBMSDomain integer.
 	self assert: (relationSchema attributesToDomains size) equals: 4.
 ]
 
