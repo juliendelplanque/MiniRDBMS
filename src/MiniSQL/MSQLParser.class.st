@@ -37,13 +37,31 @@ MSQLParser >> columnDeclaration [
 ]
 
 { #category : #rules }
+MSQLParser >> columnIdentifier [
+	^ super columnIdentifier ==> #asColumnIdentifier
+]
+
+{ #category : #rules }
 MSQLParser >> createTable [
 	^ super createTable ==> [ :tokens |
 		|petitTokens|
 		petitTokens := tokens flattened select: [ :t | t class = PPToken ].
 		MSQLCreateTable new
 			tableIdentifier: petitTokens first parsedValue;
-			columnDeclarations: petitTokens second parsedValue;
+			columnDeclarations: (petitTokens allButFirst collect: #parsedValue);
+			yourself ]
+]
+
+{ #category : #rules }
+MSQLParser >> domainIdentifier [
+	^ super domainIdentifier ==> #asDomainIdentifier
+]
+
+{ #category : #rules }
+MSQLParser >> dropTable [
+	^ super dropTable ==> [ :tokens |
+		MSQLDropTable new
+			tableIdentifier: (tokens detect: [ :o | o class = PPToken ]) parsedValue;
 			yourself ]
 ]
 
@@ -51,4 +69,9 @@ MSQLParser >> createTable [
 MSQLParser >> identifier [
 	^ super identifier ==> [ :tokens |
 		MSQLIdentifier named: (String newFrom: tokens flattened) ]
+]
+
+{ #category : #rules }
+MSQLParser >> tableIdentifier [
+	^ super tableIdentifier ==> #asTableIdentifier
 ]

@@ -7,7 +7,6 @@ Class {
 		'columnIdentifier',
 		'dropTable',
 		'columnDeclaration',
-		'typeIdentifier',
 		'createTable',
 		'alterTableAddPKConstraint',
 		'alterTableAddFKConstraint',
@@ -25,7 +24,8 @@ Class {
 		'booleanLiteral',
 		'trueLiteral',
 		'falseLiteral',
-		'nullLiteral'
+		'nullLiteral',
+		'domainIdentifier'
 	],
 	#category : #'MiniSQL-Parser'
 }
@@ -34,7 +34,7 @@ Class {
 MSQLGrammar >> alterTableAddFKConstraint [
 	^ 'ALTER' asParser caseInsensitive trimRight ,
 	'TABLE' asParser caseInsensitive trimRight ,
-	identifier token trimRight ,
+	tableIdentifier token trimRight ,
 	'ADD' asParser caseInsensitive trimRight ,
 	'FOREIGN' asParser caseInsensitive trimRight ,
 	'KEY' asParser caseInsensitive trimRight ,
@@ -49,7 +49,7 @@ MSQLGrammar >> alterTableAddFKConstraint [
 MSQLGrammar >> alterTableAddPKConstraint [
 	^ 'ALTER' asParser caseInsensitive trimRight ,
 	'TABLE' asParser caseInsensitive trimRight ,
-	identifier token trimRight ,
+	tableIdentifier token trimRight ,
 	'ADD' asParser caseInsensitive trimRight ,
 	'PRIMARY' asParser caseInsensitive trimRight ,
 	'KEY' asParser caseInsensitive trimRight ,
@@ -65,7 +65,7 @@ MSQLGrammar >> booleanLiteral [
 
 { #category : #rules }
 MSQLGrammar >> columnDeclaration [
-	^ columnIdentifier token trimRight , typeIdentifier token
+	^ identifier token trimRight , domainIdentifier token
 ]
 
 { #category : #rules }
@@ -77,7 +77,7 @@ MSQLGrammar >> columnIdentifier [
 MSQLGrammar >> createTable [
 	^ 'CREATE' asParser caseInsensitive trimRight ,
 	'TABLE' asParser caseInsensitive trimRight ,
-	tableIdentifier token trimRight ,
+	identifier token trimRight ,
 	$( asParser trimRight ,
 		(columnDeclaration token separatedBy: $, asParser trim) ,
 	$) asParser trimLeft
@@ -96,6 +96,11 @@ MSQLGrammar >> dataManipulationLanguage [
 { #category : #rules }
 MSQLGrammar >> dmlColumnIdentifier [
 	^ tableIdentifier , $. asParser , columnIdentifier
+]
+
+{ #category : #rules }
+MSQLGrammar >> domainIdentifier [
+	^ identifier
 ]
 
 { #category : #rules }
@@ -175,11 +180,6 @@ MSQLGrammar >> tableIdentifier [
 { #category : #'rules - literals' }
 MSQLGrammar >> trueLiteral [
 	^ 'TRUE' asParser
-]
-
-{ #category : #rules }
-MSQLGrammar >> typeIdentifier [
-	^ identifier
 ]
 
 { #category : #rules }

@@ -9,6 +9,11 @@ Class {
 	#category : #'MiniSQL-AST'
 }
 
+{ #category : #visiting }
+MSQLAlterTableAddFKConstraint >> acceptVisitor: aMSQLASTVisitor [
+	^ aMSQLASTVisitor visitMSQLAlterTableAddFKConstraint: self
+]
+
 { #category : #accessing }
 MSQLAlterTableAddFKConstraint >> columnIdentifiers [
 	^ columnIdentifiers

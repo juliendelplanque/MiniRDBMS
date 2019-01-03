@@ -8,6 +8,11 @@ Class {
 	#category : #'MiniSQL-AST'
 }
 
+{ #category : #visiting }
+MSQLColumnDeclaration >> acceptVisitor: aMSQLASTVisitor [
+	^ aMSQLASTVisitor visitMSQLColumnDeclaration: self
+]
+
 { #category : #accessing }
 MSQLColumnDeclaration >> columnIdentifier [
 	^ columnIdentifier
