@@ -110,6 +110,11 @@ MRDBMSQueryRunner >> visitMSQLDropTable: aMSQLDropTable [
 ]
 
 { #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLFALSELitteral: aMSQLFALSELitteral [
+	^ MRDBMSFALSE singleton
+]
+
+{ #category : #visiting }
 MRDBMSQueryRunner >> visitMSQLIdentifier: aMSQLIdentifier [
 	"In case of an identifier, we just return its name because we do not know to what it refers.
 	 It might just be an identifier for the name of a new entity."
@@ -117,7 +122,42 @@ MRDBMSQueryRunner >> visitMSQLIdentifier: aMSQLIdentifier [
 ]
 
 { #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLInsertQuery: aMSQLInsertQuery [
+	| relation attributeNames tuples tuplesRelationSchema tuplesForInsertion |
+	relation := aMSQLInsertQuery tableIdentifier acceptVisitor: self.
+	attributeNames := aMSQLInsertQuery columnIdentifiers collect: [ :c | c acceptVisitor: self ].
+	tuples := aMSQLInsertQuery tuples collect: [ :t | t acceptVisitor: self ].
+	tuplesRelationSchema := MRDBMSRelationSchema new.
+	attributeNames do: [ :attributeName |
+		tuplesRelationSchema addAttributeNamed: attributeName withDomain: nil ].
+	tuplesForInsertion := tuples collect: [ :t |
+		self halt. "TODO" ].
+	
+	tuplesForInsertion do: [ :t | relation insert: t ]
+]
+
+{ #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLIntegerLitteral: aMSQLIntegerLitteral [
+	^ aMSQLIntegerLitteral integerString asInteger
+]
+
+{ #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLNULLLitteral: aMSQLNULLLitteral [
+	^ MRDBMSNULL singleton
+]
+
+{ #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLTRUELitteral: aMSQLTRUELitteral [
+	^ MRDBMSTRUE singleton
+]
+
+{ #category : #visiting }
 MRDBMSQueryRunner >> visitMSQLTableIdentifier: aMSQLTableIdentifier [
 	^ self database relations
 		detect: [ :r | r name = aMSQLTableIdentifier name ]
+]
+
+{ #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLTuple: aMSQLTuple [
+	^ MRDBMSTuple data: (aMSQLTuple expressions collect: [ :e | e acceptVisitor: self ])
 ]

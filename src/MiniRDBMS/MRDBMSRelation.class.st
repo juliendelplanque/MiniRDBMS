@@ -52,6 +52,15 @@ MRDBMSRelation >> cartesianProduct: aMRDBMSRelation [
 		yourself
 ]
 
+{ #category : #constraints }
+MRDBMSRelation >> constraints [
+	| constraints |
+	constraints := self fkConstraints copy.
+	self hasPrimaryKey
+		ifTrue: [ constraints add: self pkConstraint ].
+	^ constraints
+]
+
 { #category : #'relational algebra' }
 MRDBMSRelation >> difference: aMRDBMSRelation [
 	self relationSchema = aMRDBMSRelation relationSchema
@@ -90,7 +99,9 @@ MRDBMSRelation >> insert: aRDBMSTuple [
 	(self relationSchema isConformTuple: aRDBMSTuple)
 		ifFalse: [ self error: 'Invalid tuple, can not be inserted in the relation.' ].
 		
-	self flag: #TODO. "When constraints will be implemented, we should check that aRDBMSTuple does not violate one of the constraints here."
+	self flag: #TODO. "Custom error with more details."
+	(self constraints allSatisfy: [ :c | c isSatisfiedBy: aRDBMSTuple ])
+		ifFalse: [ self error: 'Constraint violated.' ].
 		
 	self tuples
 		add: aRDBMSTuple

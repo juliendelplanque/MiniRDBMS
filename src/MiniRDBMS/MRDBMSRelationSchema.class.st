@@ -22,7 +22,7 @@ MRDBMSRelationSchema >> = anObject [
 
 { #category : #adding }
 MRDBMSRelationSchema >> addAttributeNamed: aString withDomain: aMRDBMSDomain [
-	(self attributesToDomains includesKey: aString)
+	(self hasAttributeNamed: aString)
 		ifTrue: [ self error: ('Attribute named {1} already present in the relation schema.' format: { aString }) ].
 	self attributesToDomains
 		at: aString put: aMRDBMSDomain

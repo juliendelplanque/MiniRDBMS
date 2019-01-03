@@ -7,6 +7,11 @@ Class {
 	#category : #'MiniSQL-AST'
 }
 
+{ #category : #visiting }
+MSQLTuple >> acceptVisitor: aMSQLASTVisitor [
+	^ aMSQLASTVisitor visitMSQLTuple: self
+]
+
 { #category : #accessing }
 MSQLTuple >> expressions [
 	^ expressions

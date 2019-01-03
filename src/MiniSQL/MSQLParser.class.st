@@ -65,6 +65,12 @@ MSQLParser >> dropTable [
 			yourself ]
 ]
 
+{ #category : #'rules - literals' }
+MSQLParser >> falseLiteral [
+	^ super falseLiteral ==> [ :tokens |
+		MSQLFALSELitteral new ]
+]
+
 { #category : #rules }
 MSQLParser >> identifier [
 	^ super identifier ==> [ :tokens |
@@ -72,6 +78,42 @@ MSQLParser >> identifier [
 ]
 
 { #category : #rules }
+MSQLParser >> insertQuery [
+	^ super insertQuery ==> [ :tokens |
+		MSQLInsertQuery new
+			tableIdentifier: tokens third parsedValue;
+			columnIdentifiers: (tokens fifth reject: #isCharacter thenCollect: #parsedValue);
+			tuples: (tokens last asOrderedCollection flattened reject: #isCharacter thenCollect: #parsedValue);
+			yourself ]
+]
+
+{ #category : #'rules - literals' }
+MSQLParser >> integerLiteral [
+	^ super integerLiteral ==> [ :tokens |
+		MSQLIntegerLitteral integerString: (String newFrom: (tokens flattened reject: #isNil)) ]
+]
+
+{ #category : #'rules - literals' }
+MSQLParser >> nullLiteral [
+	^ super nullLiteral ==> [ :tokens |
+		MSQLNULLLitteral new ]
+]
+
+{ #category : #rules }
 MSQLParser >> tableIdentifier [
 	^ super tableIdentifier ==> #asTableIdentifier
+]
+
+{ #category : #'rules - literals' }
+MSQLParser >> trueLiteral [
+	^ super trueLiteral ==> [ :tokens |
+		MSQLTRUELitteral new ]
+]
+
+{ #category : #rules }
+MSQLParser >> tuple [
+	^ super tuple ==> [ :tokens |
+		MSQLTuple new
+			expressions: (tokens second reject: #isCharacter);
+			yourself ]
 ]

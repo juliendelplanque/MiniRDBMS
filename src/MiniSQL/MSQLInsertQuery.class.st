@@ -3,10 +3,16 @@ Class {
 	#superclass : #MSQLASTNode,
 	#instVars : [
 		'tableIdentifier',
-		'columnIdentifiers'
+		'columnIdentifiers',
+		'tuples'
 	],
 	#category : #'MiniSQL-AST'
 }
+
+{ #category : #visiting }
+MSQLInsertQuery >> acceptVisitor: aMSQLASTVisitor [
+	^ aMSQLASTVisitor visitMSQLInsertQuery: self
+]
 
 { #category : #accessing }
 MSQLInsertQuery >> columnIdentifiers [
@@ -26,4 +32,14 @@ MSQLInsertQuery >> tableIdentifier [
 { #category : #accessing }
 MSQLInsertQuery >> tableIdentifier: anObject [
 	tableIdentifier := anObject
+]
+
+{ #category : #accessing }
+MSQLInsertQuery >> tuples [
+	^ tuples
+]
+
+{ #category : #accessing }
+MSQLInsertQuery >> tuples: anObject [
+	tuples := anObject
 ]

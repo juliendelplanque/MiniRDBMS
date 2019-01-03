@@ -92,7 +92,7 @@ MSQLGrammar >> dataDefinitionLanguage [
 
 { #category : #rules }
 MSQLGrammar >> dataManipulationLanguage [
-	^ PPFailingParser new
+	^ insertQuery
 ]
 
 { #category : #rules }
@@ -151,15 +151,15 @@ MSQLGrammar >> identifier [
 MSQLGrammar >> insertQuery [
 	^ 'INSERT' asParser trimRight ,
 	'INTO' asParser trimRight ,
-	tableIdentifier trimRight ,
+	tableIdentifier token trimRight ,
 	$( asParser trimRight ,
-		(columnIdentifier separatedBy: $, asParser trim) ,
+		(columnIdentifier token separatedBy: $, asParser trim) ,
 	$) asParser trimRight ,
 	'VALUES' asParser trimRight ,
 	(
-		($( asParser trimRight , (tuple separatedBy: $, asParser trim) , $) asParser trimLeft)
+		($( asParser trimRight , (tuple token separatedBy: $, asParser trim) , $) asParser trimLeft)
 		/
-		tuple
+		tuple token
 	)
 ]
 

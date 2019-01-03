@@ -40,11 +40,41 @@ MSQLASTVisitor >> visitMSQLDropTable: aMSQLDropTable [
 ]
 
 { #category : #visiting }
+MSQLASTVisitor >> visitMSQLFALSELitteral: aMSQLFALSELitteral [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
 MSQLASTVisitor >> visitMSQLIdentifier: aMSQLIdentifier [
 	^ self subclassResponsibility
 ]
 
 { #category : #visiting }
+MSQLASTVisitor >> visitMSQLInsertQuery: aMSQLInsertQuery [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
+MSQLASTVisitor >> visitMSQLIntegerLitteral: aMSQLIntegerLitteral [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
+MSQLASTVisitor >> visitMSQLNULLLitteral: aMSQLNULLLitteral [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
+MSQLASTVisitor >> visitMSQLTRUELitteral: aMSQLTRUELitteral [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
 MSQLASTVisitor >> visitMSQLTableIdentifier: aMSQLTableIdentifier [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
+MSQLASTVisitor >> visitMSQLTuple: aMSQLTuple [
 	^ self subclassResponsibility
 ]

@@ -1,3 +1,6 @@
+"
+Simulates SQL's TRUE.
+"
 Class {
 	#name : #MRDBMSTRUE,
 	#superclass : #MRDBMSBoolean,

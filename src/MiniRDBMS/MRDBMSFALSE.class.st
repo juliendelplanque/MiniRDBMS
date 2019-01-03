@@ -1,3 +1,6 @@
+"
+Simulates SQL's FALSE.
+"
 Class {
 	#name : #MRDBMSFALSE,
 	#superclass : #MRDBMSBoolean,
