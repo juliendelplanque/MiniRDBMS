@@ -14,13 +14,21 @@ Class {
 	#category : #'MiniRDBMS-Core'
 }
 
+{ #category : #accessing }
+MRDBMSDomain class >> builtInDomains [
+	^ (Pragma allNamed: #domain in: self class) collect: [ :pragma |
+			pragma methodSelector value: self ]
+]
+
 { #category : #'built-in domains' }
 MRDBMSDomain class >> char [
+	<domain>
 	^ charDomain ifNil: [ charDomain := self named: 'CHAR' validationBlock: #isCharacter ]
 ]
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> integer [
+	<domain>
 	^ integerDomain ifNil: [ integerDomain := self named: 'INTEGER' validationBlock: #isInteger ]
 ]
 
@@ -34,6 +42,7 @@ MRDBMSDomain class >> named: aString validationBlock: aBlock [
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> varchar [
+	<domain>
 	^ varcharDomain ifNil: [ varcharDomain := self named: 'VARCHAR' validationBlock: #isString ]
 ]
 

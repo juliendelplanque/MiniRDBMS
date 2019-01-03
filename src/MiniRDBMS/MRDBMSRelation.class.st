@@ -21,6 +21,16 @@ MRDBMSRelation class >> named: aString relationSchema: aMRDBMSRelationSchema [
 		yourself
 ]
 
+{ #category : #constraints }
+MRDBMSRelation >> addFKConstraint: aMRDBMSFKConstraint [
+	self flag: #TODO. "Dedicated error."
+	(aMRDBMSFKConstraint canBeAddedTo: self)
+		ifFalse: [ 'FK constraint can not be added.' ].
+	self fkConstraints add: aMRDBMSFKConstraint.
+	aMRDBMSFKConstraint
+		relation: self
+]
+
 { #category : #'relational algebra' }
 MRDBMSRelation >> cartesianProduct: aMRDBMSRelation [
 	|newRelationSchema|
@@ -53,12 +63,12 @@ MRDBMSRelation >> difference: aMRDBMSRelation [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #constraints }
 MRDBMSRelation >> fkConstraints [
 	^ fkConstraints
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MRDBMSRelation >> fkConstraints: anObject [
 	fkConstraints := anObject
 ]
@@ -71,7 +81,8 @@ MRDBMSRelation >> hasPrimaryKey [
 { #category : #initialization }
 MRDBMSRelation >> initialize [
 	super initialize.
-	self tuples: OrderedCollection new
+	self tuples: OrderedCollection new.
+	self fkConstraints: OrderedCollection new
 ]
 
 { #category : #'tuples management' }
@@ -95,18 +106,27 @@ MRDBMSRelation >> name: anObject [
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #constraints }
 MRDBMSRelation >> pkConstraint [
 	^ pkConstraint
 ]
 
-{ #category : #accessing }
+{ #category : #constraints }
 MRDBMSRelation >> pkConstraint: aMRDBMSPrimaryKeyConstraint [
+	self flag: #TODO. "Dedicated error."
 	(aMRDBMSPrimaryKeyConstraint canBeAddedTo: self)
-		ifFalse: [ self error: 'Constraint can not be added to the relation because some tuples do not satsify the constraint' ].
+		ifFalse: [ 'The relation ',self name, 'does not satisfy unicity of tuples on attributes ', (aMRDBMSPrimaryKeyConstraint attributeNames joinUsing: ', ') ].
 	pkConstraint := aMRDBMSPrimaryKeyConstraint.
 	aMRDBMSPrimaryKeyConstraint
 		relation: self
+]
+
+{ #category : #printing }
+MRDBMSRelation >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	aStream nextPutAll: self name.
+	aStream nextPut: $).
 ]
 
 { #category : #'relational algebra' }

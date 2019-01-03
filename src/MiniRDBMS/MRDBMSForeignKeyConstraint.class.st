@@ -29,6 +29,19 @@ MRDBMSForeignKeyConstraint >> isSatisfiedBy: aMRDBMSTuple [
 		any = candidateTupleProjectedOnFK ]
 ]
 
+{ #category : #printing }
+MRDBMSForeignKeyConstraint >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	self attributeNames
+		do: [ :att | aStream nextPutAll: att ]
+		separatedBy: [ aStream nextPutAll: ', ' ].
+	aStream
+		nextPutAll: ' REFERENCES ';
+		nextPutAll: self referencedRelation name.
+	aStream nextPut: $).
+]
+
 { #category : #accessing }
 MRDBMSForeignKeyConstraint >> referencedRelation [
 	^ referencedRelation

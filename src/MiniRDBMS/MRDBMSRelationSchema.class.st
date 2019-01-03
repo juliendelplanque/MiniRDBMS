@@ -63,6 +63,11 @@ MRDBMSRelationSchema >> domains [
 	^ self attributesToDomains values
 ]
 
+{ #category : #testing }
+MRDBMSRelationSchema >> hasAttributeNamed: aString [
+	^ self attributeNames includes: aString
+]
+
 { #category : #comparing }
 MRDBMSRelationSchema >> hash [
 	"Answer an integer value that is related to the identity of the receiver."

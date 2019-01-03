@@ -26,3 +26,13 @@ MRDBMSPrimaryKeyConstraint >> isSatisfiedBy: aMRDBMSTuple [
 	^ (self relation projectOn: self attributeNames) tuples
 		noneSatisfy: [ :t | t = projectedTuple ]
 ]
+
+{ #category : #printing }
+MRDBMSPrimaryKeyConstraint >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	self attributeNames
+		do: [ :att | aStream nextPutAll: att ]
+		separatedBy: [ aStream nextPutAll: ', ' ].
+	aStream nextPut: $).
+]

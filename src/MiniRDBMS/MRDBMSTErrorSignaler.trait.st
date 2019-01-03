@@ -14,3 +14,8 @@ MRDBMSTErrorSignaler >> error: aString [
 	MRDBMSError new
 		signal: aString
 ]
+
+{ #category : #'error handling' }
+MRDBMSTErrorSignaler >> errorRelationAlreadyExists: tableName [
+	MRDBMSRelationAlreadyExistsError signalRelation: tableName
+]
