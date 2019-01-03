@@ -1,3 +1,8 @@
+"
+I run a query provided as an AST.
+
+I work naively for SELECT queries but for all other kinds of query it is ok to use me.
+"
 Class {
 	#name : #MRDBMSQueryRunner,
 	#superclass : #MSQLASTVisitor,
@@ -101,7 +106,7 @@ MRDBMSQueryRunner >> visitMSQLDomainIdentifier: aMSQLDomainIdentifier [
 MRDBMSQueryRunner >> visitMSQLDropTable: aMSQLDropTable [
 	| tableName |
 	tableName := aMSQLDropTable tableIdentifier acceptVisitor: self.
-	self database removeRelationNamed: tableName
+	self database removeRelation: tableName
 ]
 
 { #category : #visiting }
