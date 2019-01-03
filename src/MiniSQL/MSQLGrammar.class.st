@@ -25,34 +25,36 @@ Class {
 		'trueLiteral',
 		'falseLiteral',
 		'nullLiteral',
-		'domainIdentifier'
+		'domainIdentifier',
+		'insertQuery',
+		'tuple'
 	],
 	#category : #'MiniSQL-Parser'
 }
 
 { #category : #rules }
 MSQLGrammar >> alterTableAddFKConstraint [
-	^ 'ALTER' asParser caseInsensitive trimRight ,
-	'TABLE' asParser caseInsensitive trimRight ,
+	^ 'ALTER' asParser trimRight ,
+	'TABLE' asParser trimRight ,
 	tableIdentifier token trimRight ,
-	'ADD' asParser caseInsensitive trimRight ,
-	'FOREIGN' asParser caseInsensitive trimRight ,
-	'KEY' asParser caseInsensitive trimRight ,
+	'ADD' asParser trimRight ,
+	'FOREIGN' asParser trimRight ,
+	'KEY' asParser trimRight ,
 	$( asParser trimRight ,
 	(columnIdentifier token separatedBy: $, asParser trim) ,
 	$) asParser trim ,
-	'REFERENCES' asParser caseInsensitive trimRight ,
+	'REFERENCES' asParser trimRight ,
 	tableIdentifier token
 ]
 
 { #category : #rules }
 MSQLGrammar >> alterTableAddPKConstraint [
-	^ 'ALTER' asParser caseInsensitive trimRight ,
-	'TABLE' asParser caseInsensitive trimRight ,
+	^ 'ALTER' asParser trimRight ,
+	'TABLE' asParser trimRight ,
 	tableIdentifier token trimRight ,
-	'ADD' asParser caseInsensitive trimRight ,
-	'PRIMARY' asParser caseInsensitive trimRight ,
-	'KEY' asParser caseInsensitive trimRight ,
+	'ADD' asParser trimRight ,
+	'PRIMARY' asParser trimRight ,
+	'KEY' asParser trimRight ,
 	$( asParser trimRight ,
 	(columnIdentifier token separatedBy: $, asParser trim) ,
 	$) asParser trimLeft
@@ -75,8 +77,8 @@ MSQLGrammar >> columnIdentifier [
 
 { #category : #rules }
 MSQLGrammar >> createTable [
-	^ 'CREATE' asParser caseInsensitive trimRight ,
-	'TABLE' asParser caseInsensitive trimRight ,
+	^ 'CREATE' asParser trimRight ,
+	'TABLE' asParser trimRight ,
 	identifier token trimRight ,
 	$( asParser trimRight ,
 		(columnDeclaration token separatedBy: $, asParser trim) ,
@@ -105,12 +107,12 @@ MSQLGrammar >> domainIdentifier [
 
 { #category : #rules }
 MSQLGrammar >> dropTable [
-	^ 'DROP' asParser caseInsensitive trimRight , 'TABLE' asParser caseInsensitive trimRight , tableIdentifier token
+	^ 'DROP' asParser trimRight , 'TABLE' asParser trimRight , tableIdentifier token
 ]
 
 { #category : #rules }
 MSQLGrammar >> exceptClause [
-	^ 'EXCEPT' asParser caseInsensitive trimRight ,
+	^ 'EXCEPT' asParser trimRight ,
 	selectQuery token
 ]
 
@@ -120,10 +122,12 @@ MSQLGrammar >> expression [
 		term: (dmlColumnIdentifier / integerLiteral / booleanLiteral / nullLiteral);
 		group: [ :group | "Arithmetic expressions."
 			group left: ($+ asParser / $- asParser) trim do: [ :left :operator :right |
+				{ left . operator . right }. self flag: #TODO ].
+				group left: ($* asParser / $/ asParser) trim do: [ :left :operator :right |
 				{ left . operator . right }. self flag: #TODO ] ];
 		group: [ :group | "Boolean expressions."
-			group prefix: 'NOT' asParser caseInsensitive token trim do: [ :operator :exp | { operator . exp }. self flag: #TODO ].
-			group left: ('AND' asParser caseInsensitive / 'OR' asParser caseInsensitive) token trim do: [ :left :operator :right |
+			group prefix: 'NOT' asParser token trim do: [ :operator :exp | { operator . exp }. self flag: #TODO ].
+			group left: ('AND' asParser / 'OR' asParser caseInsensitive) token trim do: [ :left :operator :right |
 				{ left . operator . right }. self flag: #TODO ] ];
 		yourself
 ]
@@ -135,12 +139,28 @@ MSQLGrammar >> falseLiteral [
 
 { #category : #rules }
 MSQLGrammar >> fromClause [
-	^ 'FROM' asParser caseInsensitive trimRight , (tableIdentifier token separatedBy: $, asParser trim)
+	^ 'FROM' asParser trimRight , (tableIdentifier token separatedBy: $, asParser trim)
 ]
 
 { #category : #rules }
 MSQLGrammar >> identifier [
 	^ #letter asParser , (#letter asParser / #digit asParser) star
+]
+
+{ #category : #rules }
+MSQLGrammar >> insertQuery [
+	^ 'INSERT' asParser trimRight ,
+	'INTO' asParser trimRight ,
+	tableIdentifier trimRight ,
+	$( asParser trimRight ,
+		(columnIdentifier separatedBy: $, asParser trim) ,
+	$) asParser trimRight ,
+	'VALUES' asParser trimRight ,
+	(
+		($( asParser trimRight , (tuple separatedBy: $, asParser trim) , $) asParser trimLeft)
+		/
+		tuple
+	)
 ]
 
 { #category : #'rules - literals' }
@@ -155,7 +175,7 @@ MSQLGrammar >> nullLiteral [
 
 { #category : #rules }
 MSQLGrammar >> selectClause [
-	^ 'SELECT' asParser caseInsensitive trimRight
+	^ 'SELECT' asParser trimRight
 		, (dmlColumnIdentifier token separatedBy: $, asParser trim)
 ]
 
@@ -183,12 +203,19 @@ MSQLGrammar >> trueLiteral [
 ]
 
 { #category : #rules }
+MSQLGrammar >> tuple [
+	^ $( asParser trimRight ,
+	(expression separatedBy: $, asParser trim) ,
+	$) asParser trimLeft
+]
+
+{ #category : #rules }
 MSQLGrammar >> unionClause [
-	^ 'UNION' asParser caseInsensitive trimRight ,
+	^ 'UNION' asParser trimRight ,
 	selectQuery token
 ]
 
 { #category : #rules }
 MSQLGrammar >> whereClause [
-	^ 'WHERE' asParser caseInsensitive trimRight , expression token
+	^ 'WHERE' asParser trimRight , expression token
 ]

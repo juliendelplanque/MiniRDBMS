@@ -43,11 +43,36 @@ MSQLGrammarTest >> testDropTable [
 ]
 
 { #category : #tests }
+MSQLGrammarTest >> testExpression [
+	self parse: '1' rule: #expression.
+	self parse: 'TRUE' rule: #expression.
+	self parse: 'FALSE' rule: #expression.
+	self parse: 'NULL' rule: #expression.
+	
+	self parse: '1 + 1' rule: #expression.
+	self parse: '1 * 1' rule: #expression.
+	
+	self parse: 'TRUE AND TRUE' rule: #expression.
+	self parse: 'NOT TRUE AND TRUE' rule: #expression.
+	self parse: 'TRUE OR NOT FALSE' rule: #expression.
+]
+
+{ #category : #tests }
 MSQLGrammarTest >> testIdentifier [
 	self parse: 'a' rule: #identifier.
 	self parse: 'foo1' rule: #identifier.
 	self fail: '1' rule: #identifier.
 	self fail: '1foo' rule: #identifier
+]
+
+{ #category : #tests }
+MSQLGrammarTest >> testInsertQuery [
+	self parse: 'INSERT INTO t(a,b,c,d) VALUES (1, TRUE, FALSE, NULL)' rule: #insertQuery
+]
+
+{ #category : #tests }
+MSQLGrammarTest >> testInsertQuery2 [
+	self parse: 'INSERT INTO t(a,b,c,d) VALUES ((1, TRUE, FALSE, NULL), (2, FALSE, FALSE, NULL), (3, TRUE, TRUE, NULL))' rule: #insertQuery
 ]
 
 { #category : #tests }
