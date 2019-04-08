@@ -64,8 +64,7 @@ MRDBMSTuple >> printOn: aStream [
 
 { #category : #transforming }
 MRDBMSTuple >> projectOn: attributeNames withSchema: aMRDBMSRelationSchema [
-	^ self class data: (self data withIndexSelect: [ :element :index |
-									attributeNames includes: (aMRDBMSRelationSchema attributeNameAtIndex: index) ])
+	^ self class data: (attributeNames collect: [ :attributeName | self at: attributeName withSchema: aMRDBMSRelationSchema ])
 ]
 
 { #category : #accessing }
