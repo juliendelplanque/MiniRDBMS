@@ -9,10 +9,17 @@ Class {
 		'charDomain',
 		'integerDomain',
 		'realDomain',
-		'varcharDomain'
+		'varcharDomain',
+		'boolDomain'
 	],
 	#category : #'MiniRDBMS-Core'
 }
+
+{ #category : #'built-in domains' }
+MRDBMSDomain class >> boolean [
+	<domain>
+	^ boolDomain ifNil: [ boolDomain := self named: 'BOOL' validationBlock: #isRDBMSBoolean ]
+]
 
 { #category : #accessing }
 MRDBMSDomain class >> builtInDomains [
@@ -60,6 +67,14 @@ MRDBMSDomain >> name [
 { #category : #accessing }
 MRDBMSDomain >> name: anObject [
 	name := anObject
+]
+
+{ #category : #printing }
+MRDBMSDomain >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	aStream nextPutAll: self name.
+	aStream nextPut: $).
 ]
 
 { #category : #accessing }

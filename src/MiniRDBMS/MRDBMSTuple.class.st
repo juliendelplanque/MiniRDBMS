@@ -67,3 +67,8 @@ MRDBMSTuple >> projectOn: attributeNames withSchema: aMRDBMSRelationSchema [
 	^ self class data: (self data withIndexSelect: [ :element :index |
 									attributeNames includes: (aMRDBMSRelationSchema attributeNameAtIndex: index) ])
 ]
+
+{ #category : #accessing }
+MRDBMSTuple >> size [
+	^ self data size
+]

@@ -39,6 +39,11 @@ MRDBMSFALSE >> not [
 	^ MRDBMSTRUE singleton
 ]
 
+{ #category : #printing }
+MRDBMSFALSE >> printOn: aStream [
+	aStream nextPutAll: 'FALSE'
+]
+
 { #category : #'logical operations' }
 MRDBMSFALSE >> | aRDBMSBoolean [
 	aRDBMSBoolean = self

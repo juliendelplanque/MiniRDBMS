@@ -25,6 +25,11 @@ MSQLASTVisitor >> visitMSQLColumnIdentifier: aMSQLColumnIdentifier [
 ]
 
 { #category : #visiting }
+MSQLASTVisitor >> visitMSQLCommandList: aMSQLCommandList [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
 MSQLASTVisitor >> visitMSQLCreateTable: aMSQLCreateTable [
 	^ self subclassResponsibility
 ]

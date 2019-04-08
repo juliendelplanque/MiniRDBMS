@@ -27,7 +27,8 @@ Class {
 		'nullLiteral',
 		'domainIdentifier',
 		'insertQuery',
-		'tuple'
+		'tuple',
+		'command'
 	],
 	#category : #'MiniSQL-Parser'
 }
@@ -73,6 +74,11 @@ MSQLGrammar >> columnDeclaration [
 { #category : #rules }
 MSQLGrammar >> columnIdentifier [
 	^ identifier
+]
+
+{ #category : #rules }
+MSQLGrammar >> command [
+	^ (dataDefinitionLanguage token / dataManipulationLanguage token) trim , $; asParser trim
 ]
 
 { #category : #rules }
@@ -189,7 +195,7 @@ MSQLGrammar >> selectQuery [
 
 { #category : #accessing }
 MSQLGrammar >> start [
-	^ dataDefinitionLanguage / dataManipulationLanguage
+	^ command plus
 ]
 
 { #category : #rules }

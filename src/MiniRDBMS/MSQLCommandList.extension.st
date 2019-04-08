@@ -1,7 +1,7 @@
-Extension { #name : #MSQLASTNode }
+Extension { #name : #MSQLCommandList }
 
 { #category : #'*MiniRDBMS' }
-MSQLASTNode >> runOn: aMRDBMSDatabase [
+MSQLCommandList >> runOn: aMRDBMSDatabase [
 	self acceptVisitor: (MRDBMSQueryRunner new
 		database: aMRDBMSDatabase;
 		yourself)

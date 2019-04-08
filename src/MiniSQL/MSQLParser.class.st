@@ -99,6 +99,14 @@ MSQLParser >> nullLiteral [
 		MSQLNULLLitteral new ]
 ]
 
+{ #category : #accessing }
+MSQLParser >> start [
+	^ super start ==> [ :tokens |
+		MSQLCommandList new
+			commands: (tokens flattened reject: #isCharacter thenCollect: #parsedValue);
+			yourself ]
+]
+
 { #category : #rules }
 MSQLParser >> tableIdentifier [
 	^ super tableIdentifier ==> #asTableIdentifier

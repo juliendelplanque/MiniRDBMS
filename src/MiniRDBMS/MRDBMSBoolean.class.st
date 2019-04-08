@@ -14,6 +14,11 @@ MRDBMSBoolean >> & aRDBMSBoolean [
 	^ self subclassResponsibility
 ]
 
+{ #category : #testing }
+MRDBMSBoolean >> isRDBMSBoolean [
+	^ true
+]
+
 { #category : #'logical operations' }
 MRDBMSBoolean >> not [
 	^ self subclassResponsibility

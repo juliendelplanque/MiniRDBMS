@@ -78,6 +78,12 @@ MRDBMSNULL >> adaptToNumber: rcvr andSend: selector [
 	^ self
 ]
 
+{ #category : #testing }
+MRDBMSNULL >> isRDBMSBoolean [
+	"Ternary logic, can be used with booleans."
+	^ true
+]
+
 { #category : #arithmetic }
 MRDBMSNULL >> negated [
 	^ self
@@ -86,6 +92,11 @@ MRDBMSNULL >> negated [
 { #category : #'logical operations' }
 MRDBMSNULL >> not [
 	^ self
+]
+
+{ #category : #printing }
+MRDBMSNULL >> printOn: aStream [
+	aStream nextPutAll: 'NULL'
 ]
 
 { #category : #arithmetic }

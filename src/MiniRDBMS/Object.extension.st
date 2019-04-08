@@ -4,3 +4,8 @@ Extension { #name : #Object }
 Object >> asMRDBMSObject [
 	^ self
 ]
+
+{ #category : #'*MiniRDBMS' }
+Object >> isRDBMSBoolean [
+	^ false
+]

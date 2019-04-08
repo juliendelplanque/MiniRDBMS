@@ -78,6 +78,11 @@ MRDBMSQueryRunner >> visitMSQLColumnIdentifier: aMSQLColumnIdentifier [
 ]
 
 { #category : #visiting }
+MRDBMSQueryRunner >> visitMSQLCommandList: aMSQLCommandList [
+	^ aMSQLCommandList commands do: [ :c | c acceptVisitor: self ]
+]
+
+{ #category : #visiting }
 MRDBMSQueryRunner >> visitMSQLCreateTable: aMSQLCreateTable [
 	| relationSchema tableName |
 	tableName := aMSQLCreateTable tableIdentifier acceptVisitor: self.
@@ -123,15 +128,18 @@ MRDBMSQueryRunner >> visitMSQLIdentifier: aMSQLIdentifier [
 
 { #category : #visiting }
 MRDBMSQueryRunner >> visitMSQLInsertQuery: aMSQLInsertQuery [
-	| relation attributeNames tuples tuplesRelationSchema tuplesForInsertion |
+	| relation attributeNames tuples tuplesRelationSchema tuplesForInsertion tuplesMapper |
 	relation := aMSQLInsertQuery tableIdentifier acceptVisitor: self.
+	executionStack push: relation.
 	attributeNames := aMSQLInsertQuery columnIdentifiers collect: [ :c | c acceptVisitor: self ].
+	executionStack pop.
 	tuples := aMSQLInsertQuery tuples collect: [ :t | t acceptVisitor: self ].
 	tuplesRelationSchema := MRDBMSRelationSchema new.
 	attributeNames do: [ :attributeName |
-		tuplesRelationSchema addAttributeNamed: attributeName withDomain: nil ].
+		tuplesRelationSchema addAttributeNamed: attributeName withDomain: (relation relationSchema domainOf: attributeName) ].
+	tuplesMapper := MRDBMSTupleMapper baseRelationSchema: tuplesRelationSchema targetRelationSchema: relation relationSchema.
 	tuplesForInsertion := tuples collect: [ :t |
-		self halt. "TODO" ].
+		tuplesMapper map: t ].
 	
 	tuplesForInsertion do: [ :t | relation insert: t ]
 ]
