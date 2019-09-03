@@ -1,3 +1,8 @@
+"
+I model a foreign key constraint applied on a relation.
+
+I only store the #referencedRelation because I consider that the primary key of this relation has the right attributes for my #attributeNames to refer to them.
+"
 Class {
 	#name : #MRDBMSForeignKeyConstraint,
 	#superclass : #MRDBMSConstraint,

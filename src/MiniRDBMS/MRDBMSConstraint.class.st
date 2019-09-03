@@ -1,3 +1,12 @@
+"
+I model an abstract constraint applied on a relation of the database.
+
+I hold the relation on which I am applied and the attributes concerned.
+
+My subclasses must implement:
+- #canBeAddedTo:
+- #isSatisfiedBy:
+"
 Class {
 	#name : #MRDBMSConstraint,
 	#superclass : #Object,

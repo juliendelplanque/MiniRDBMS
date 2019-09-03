@@ -17,6 +17,7 @@ Class {
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> boolean [
+	<sampleInstance>
 	<domain>
 	^ boolDomain ifNil: [ boolDomain := self named: 'BOOL' validationBlock: #isRDBMSBoolean ]
 ]
@@ -29,12 +30,14 @@ MRDBMSDomain class >> builtInDomains [
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> char [
+	<sampleInstance>
 	<domain>
 	^ charDomain ifNil: [ charDomain := self named: 'CHAR' validationBlock: #isCharacter ]
 ]
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> integer [
+	<sampleInstance>
 	<domain>
 	^ integerDomain ifNil: [ integerDomain := self named: 'INTEGER' validationBlock: #isInteger ]
 ]
@@ -49,6 +52,7 @@ MRDBMSDomain class >> named: aString validationBlock: aBlock [
 
 { #category : #'built-in domains' }
 MRDBMSDomain class >> varchar [
+	<sampleInstance>
 	<domain>
 	^ varcharDomain ifNil: [ varcharDomain := self named: 'VARCHAR' validationBlock: #isString ]
 ]

@@ -1,3 +1,6 @@
+"
+I model a primary key constraint applied on a relation.
+"
 Class {
 	#name : #MRDBMSPrimaryKeyConstraint,
 	#superclass : #MRDBMSConstraint,
