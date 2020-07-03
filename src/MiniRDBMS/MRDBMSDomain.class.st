@@ -1,3 +1,9 @@
+"
+I model the domain of one of the attributes of a relation.
+
+A model has a #name and a #validationBlock.
+The #validationBlock can be used to evaluate if a value belongs or not to the domain via #isInDomain: (returning respectively true or false).
+"
 Class {
 	#name : #MRDBMSDomain,
 	#superclass : #Object,
